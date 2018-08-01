@@ -1,0 +1,79 @@
+<!--INICIO DO CONTEUDO-->
+<section class="content-header">
+</section>
+
+<section class="content">
+  <section class="invoice">
+
+        <form #form="ngForm">
+          <div class="row">
+            <div class="col-xs-12">
+              <h2 class="page-header">
+                <i class="fa fa-shopping-cart"></i> Finalize o seu pedido
+              </h2>
+            </div>
+          </div>                
+          <div class="row invoice-info" *ngIf="cartItens().length">
+            <div class="col-xs-12">
+              <p class="lead">Endereço de Entrega:</p>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <mt-input label="Endereço" errorMessage="Campo obrigatório de 5 caracteres">
+                <input class="form-control" placeholder="Endereço" name="address" required ngModel minlength="5" autocomplete="off">
+              </mt-input>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+              <mt-input label="Número" errorMessage="Número inválido">
+                <input class="form-control" placeholder="Número" name="number" required ngModel pattern="\d*" autocomplete="off">
+              </mt-input>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+              <mt-input label="Complemento">
+                <input class="form-control" placeholder="Complemento" name="optional" ngModel autocomplete="off">
+              </mt-input>
+
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+
+          <!-- Table row -->
+          <div class="row">
+            <div class="col-xs-12">
+              <p class="lead">Itens do Pedido:</p>
+            </div>
+            
+            <mt-item-list [itens]="cartItens()" 
+              (remove)="remove($event)" 
+              (increaseQty)="increaseQty($event)"
+              (decreaseQty)="decreaseQty($event)"></mt-item-list>
+          </div>
+          <!-- /.row -->
+
+          <div class="row">
+            <!-- accepted payments column -->
+            <div class="col-sm-6 col-xs-12" *ngIf="cartItens().length">
+              <p class="lead">Formas de Pagamento:</p>
+
+                <div class="form-group">
+                  <mt-radio [radioOptions]="options" name="paymentOption" ngModel required></mt-radio>
+                </div>
+            </div>
+            <!-- /.col -->
+            <mt-delivery-costs *ngIf="cartItens().length" [itensValue]="totalValue()" [deliveryCost]="deliveryCost()"></mt-delivery-costs>
+            <!-- /.col -->
+          </div>
+
+        </form>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <button class="btn btn-success pull-right" (click)="checkOrder(form.value)" [disabled]="form.invalid || !cartItens().length"><i class="fa fa-credit-card"></i> Concluir Pedido</button>
+          </div>
+        </div>
+
+    </section>
+</section>
+<!-- FIM DO CONTEUDO-->
